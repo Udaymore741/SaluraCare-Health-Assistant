@@ -2,6 +2,14 @@
 
 A web-based health monitoring chatbot that provides preliminary health risk assessment through conversational interaction, enhanced with Google Gemini AI for detailed, personalized responses.
 
+## Screenshots
+
+![Chat Start](public/screenshots/Screenshot%202026-03-29%20135435.png)
+
+![Conversation Flow](public/screenshots/Screenshot%202026-03-29%20144719.png)
+
+![AI Response](public/screenshots/Screenshot%202026-03-29%20144728.png)
+
 ## Features
 
 - Conversational health data collection (age → symptoms → duration)
