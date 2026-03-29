@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { CONVERSATION_STEPS, getNextPrompt, processUserInput } from './logic/conversationController';
 import { analyzeRisk, getRecommendation } from './logic/healthAnalyzer';
 import { enhanceResponse } from './services/aiService';
@@ -8,20 +8,22 @@ import InputBox from './components/InputBox';
 function App() {
   // State management
   const [messages, setMessages] = useState([]);
-  const [currentStep, setCurrentStep] = useState(CONVERSATION_STEPS.DISCLAIMER);
+  const [currentStep, setCurrentStep] = useState(CONVERSATION_STEPS.ASK_AGE);
   const [symptomData, setSymptomData] = useState({
     age: null,
     symptoms: null,
     duration: null
   });
   const [isTyping, setIsTyping] = useState(false);
+  const initialized = useRef(false);
 
-  // Initialize with medical disclaimer on component mount
+  // Initialize with medical disclaimer on component mount (ref prevents StrictMode double-run)
   useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+
     addBotMessage(getNextPrompt(CONVERSATION_STEPS.DISCLAIMER));
-    // Move to ASK_AGE step after disclaimer
     setTimeout(() => {
-      setCurrentStep(CONVERSATION_STEPS.ASK_AGE);
       addBotMessage(getNextPrompt(CONVERSATION_STEPS.ASK_AGE));
     }, 1000);
   }, []);
@@ -147,20 +149,13 @@ function App() {
    * Restarts the chat session
    */
   const handleRestart = () => {
-    // Clear all state
     setMessages([]);
-    setSymptomData({
-      age: null,
-      symptoms: null,
-      duration: null
-    });
-    setCurrentStep(CONVERSATION_STEPS.DISCLAIMER);
+    setSymptomData({ age: null, symptoms: null, duration: null });
+    setCurrentStep(CONVERSATION_STEPS.ASK_AGE);
     setIsTyping(false);
 
-    // Reinitialize with disclaimer
     addBotMessage(getNextPrompt(CONVERSATION_STEPS.DISCLAIMER));
     setTimeout(() => {
-      setCurrentStep(CONVERSATION_STEPS.ASK_AGE);
       addBotMessage(getNextPrompt(CONVERSATION_STEPS.ASK_AGE));
     }, 1000);
   };
