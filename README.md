@@ -10,6 +10,8 @@ A web-based health monitoring chatbot that provides preliminary health risk asse
 
 ![AI Response](public/screenshots/Screenshot%202026-03-29%20144728.png)
 
+## Live Demo : https://salura-care-health-assistant.vercel.app/
+
 ## Features
 
 - Conversational health data collection (age → symptoms → duration)
